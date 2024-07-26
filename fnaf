@@ -1,0 +1,301 @@
+local OrionLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/shlexware/Orion/main/source"))()
+
+local Window = OrionLib:MakeWindow({
+    Name = "Script Hub",
+    HidePremium = false,
+    SaveConfig = true,
+    ConfigFolder = "OrionTest"
+})
+
+-- Function to teleport the player to a specific CFrame
+function TeleportToCoordinates(cframe)
+    local player = game.Players.LocalPlayer
+    player.Character.HumanoidRootPart.CFrame = cframe
+end
+
+-- Create a new tab
+local Tab = Window:MakeTab({
+    Name = "pizzeria",
+    Icon = "rbxassetid://4483345998",
+    PremiumOnly = false
+})
+
+-- Example teleport locations (You can replace these with your actual coordinates)
+local teleportLocations = {
+    Lever1 = CFrame.new(-17.5558701, 6.49288034, 70.8710022, 0, 0, -1, 0, 1, 0, 1, 0, 0),
+    Lever2 = CFrame.new(27.2710114, 6.40785742, 174.455963, 1, 0, 0, 0, 1, 0, 0, 0, 1),
+    Lever3 = CFrame.new(40.256134, 6.49288034, 104.871002, 0, 0, -1, 0, 1, 0, 1, 0, 0),
+    Lever4 = CFrame.new(-164.39415, 6.4928813, 153.679031, 0, 0, 1, 0, 1, -0, -1, 0, 0),
+    Lever5 = CFrame.new(-87.7289734, 6.49288034, 204.955902, 1, 0, 0, 0, 1, 0, 0, 0, 1),
+    Lever6 = CFrame.new(-79.4539108, 6.37248802, 42.6138649, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+}
+
+-- Variable to store the selected lever
+local selectedLever = "Lever1"
+
+-- Create a dropdown menu to select the lever
+Tab:AddDropdown({
+    Name = "Select Lever",
+    Default = selectedLever,
+    Options = {"Lever1", "Lever2", "Lever3", "Lever4", "Lever5", "Lever6"},
+    Callback = function(Value)
+        selectedLever = Value
+    end
+})
+
+-- Add a button to teleport to the selected lever
+Tab:AddButton({
+    Name = "Teleport to Lever",
+    Callback = function()
+        if teleportLocations[selectedLever] then
+            TeleportToCoordinates(teleportLocations[selectedLever])
+        else
+            warn("No teleport location found for " .. selectedLever)
+        end
+    end
+})
+
+
+-- Example teleport locations (You can replace these with your actual coordinates)
+local teleportLocations = {
+    Generator1 = CFrame.new(41.284, 4.487, 54.217),
+    Generator2 = CFrame.new(-37.716, 4.487, 83.517),
+    Generator3 = CFrame.new(-72.384, 4.487, 195.182),
+    Generator4 = CFrame.new(-194.984, 4.487, 109.382),
+}
+
+-- Variable to store the selected lever
+local selectedLever = "Generators1"
+
+-- Create a dropdown menu to select the lever
+Tab:AddDropdown({
+    Name = "Select Generators",
+    Default = selectedLever,
+    Options = {"Generator1", "Generator2", "Generator3", "Generator4",},
+    Callback = function(Value)
+        selectedLever = Value
+    end
+})
+
+-- Add a button to teleport to the selected lever
+Tab:AddButton({
+    Name = "Teleport to Lever",
+    Callback = function()
+        if teleportLocations[selectedLever] then
+            TeleportToCoordinates(teleportLocations[selectedLever])
+        else
+            warn("No teleport location found for " .. selectedLever)
+        end
+    end
+})
+---------------------------------------------------------------------------------------------------------------------
+
+-- ESP Function
+local function createESP(character)
+    local function createBox(adornPart, color, sizeOffset)
+        local box = Instance.new("BoxHandleAdornment")
+        box.Size = adornPart.Size + sizeOffset
+        box.Adornee = adornPart
+        box.Color3 = color
+        box.Transparency = 0.5
+        box.AlwaysOnTop = true
+        box.ZIndex = 1
+        box.Parent = adornPart
+    end
+    
+    -- Create green box
+    createBox(character.PrimaryPart, Color3.new(0, 1, 0), Vector3.new(0, 0, 0))  -- Green color
+
+    -- Create white outline
+    createBox(character.PrimaryPart, Color3.new(1, 1, 1), Vector3.new(0.1, 0.1, 0.1))  -- White color and slightly larger
+end
+
+local function applyESPToCharacters()
+    local animatronicsFolder = workspace:WaitForChild("WorkspaceUtilities"):WaitForChild("Animatronics")
+    for _, character in pairs(animatronicsFolder:GetChildren()) do
+        if character:IsA("Model") and (character.Name == "Bonnie" or character.Name == "Freddy" or character.Name == "ShadowBonnie") then
+            print("Found character:", character.Name)
+            if character:FindFirstChild("Humanoid") and character:FindFirstChild("HumanoidRootPart") then
+                character.PrimaryPart = character:FindFirstChild("HumanoidRootPart")
+                createESP(character)
+            else
+                print("Required parts not found for character:", character.Name)
+            end
+        end
+    end
+end
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+local function applyESPToCharacters()
+    local animatronicsFolder = workspace:WaitForChild("WorkspaceUtilities"):WaitForChild("Animatronics")
+    for _, character in pairs(animatronicsFolder:GetChildren()) do
+        if character:IsA("Model") and (character.Name == "Bonnie" or character.Name == "Freddy" or character.Name == "ShadowBonnie") then
+            print("Found character:", character.Name)
+            if character:FindFirstChild("Humanoid") and character:FindFirstChild("HumanoidRootPart") then
+                character.PrimaryPart = character:FindFirstChild("HumanoidRootPart")
+                createESP(character)
+            else
+                print("Required parts not found for character:", character.Name)
+            end
+        end
+    end
+end
+
+-- Add a button to the Tab
+-- Function to create the ESP outline and text
+local function createESP(character)
+    -- Helper function to create the outline box
+    local function createBox(adornPart, color, sizeOffset)
+        local box = Instance.new("BoxHandleAdornment")
+        box.Size = adornPart.Size + sizeOffset
+        box.Adornee = adornPart
+        box.Color3 = color
+        box.Transparency = 0.5
+        box.AlwaysOnTop = true
+        box.ZIndex = 1
+        box.Parent = adornPart
+    end
+    
+    -- Create red box
+    createBox(character.PrimaryPart, Color3.new(1, 0, 0), Vector3.new(0, 0, 0)) -- Red color
+
+    -- Create white outline
+    createBox(character.PrimaryPart, Color3.new(1, 1, 1), Vector3.new(0.1, 0.1, 0.1)) -- White color and slightly larger
+
+    -- Create a BillboardGui for the text
+    local billboardGui = Instance.new("BillboardGui")
+    billboardGui.Adornee = character.PrimaryPart
+    billboardGui.Size = UDim2.new(4, 0, 1, 0)
+    billboardGui.StudsOffset = Vector3.new(0, 3, 0)
+    billboardGui.AlwaysOnTop = true
+
+    -- Create a TextLabel for the character information
+    local textLabel = Instance.new("TextLabel")
+    textLabel.Size = UDim2.new(1, 0, 1, 0)
+    textLabel.BackgroundTransparency = 1
+    textLabel.TextColor3 = Color3.new(1, 0, 0) -- Red color for the text
+    textLabel.TextStrokeTransparency = 0 -- Add outline to the text
+    textLabel.Font = Enum.Font.SourceSansBold
+    textLabel.TextScaled = true
+    textLabel.Parent = billboardGui
+
+    -- Calculate distance from player
+    local player = game.Players.LocalPlayer
+    local characterPosition = character.PrimaryPart.Position
+    local playerPosition = player.Character and player.Character.PrimaryPart.Position or Vector3.new(0, 0, 0)
+    local distance = (characterPosition - playerPosition).Magnitude
+
+    -- Set the text
+    textLabel.Text = string.format("NAME: %s | TYPE: ENTITY | DISTANCE: %.0f", character.Name, distance)
+
+    -- Parent the BillboardGui to the character's primary part
+    billboardGui.Parent = character.PrimaryPart
+end
+
+-- Function to apply ESP to all target characters
+local function applyESPToCharacters()
+    local animatronicsFolder = workspace:WaitForChild("WorkspaceUtilities"):WaitForChild("Animatronics")
+    for _, character in pairs(animatronicsFolder:GetChildren()) do
+        if character:IsA("Model") and (character.Name == "Bonnie" or character.Name == "Freddy" or character.Name == "ShadowBonnie") then
+            print("Found character:", character.Name)
+            if character:FindFirstChild("Humanoid") and character:FindFirstChild("HumanoidRootPart") then
+                character.PrimaryPart = character:FindFirstChild("HumanoidRootPart")
+                createESP(character)
+            else
+                print("Required parts not found for character:", character.Name)
+            end
+        end
+    end
+end
+
+-- Add a button to the Tab
+Tab:AddButton({
+    Name = "Role Color",
+    Callback = function()
+        print("button pressed")
+        -- Check if applyESPToCharacters is defined
+        if applyESPToCharacters then
+            applyESPToCharacters()
+        else
+            warn("applyESPToCharacters function is not defined!")
+        end
+    end    
+})
+-------------------------------------------------------------------------------------------------------------------------------
+-- Function to create the ESP outline and text
+local function createESP(character)
+    -- Helper function to create the outline box
+    local function createBox(adornPart, color, sizeOffset)
+        local box = Instance.new("BoxHandleAdornment")
+        box.Size = adornPart.Size + sizeOffset
+        box.Adornee = adornPart
+        box.Color3 = color
+        box.Transparency = 0.5
+        box.AlwaysOnTop = true
+        box.ZIndex = 1
+        box.Parent = adornPart
+    end
+    
+    -- Create red box
+    createBox(character.PrimaryPart, Color3.new(1, 0, 0), Vector3.new(0, 0, 0)) -- Red color
+
+    -- Create white outline
+    createBox(character.PrimaryPart, Color3.new(1, 1, 1), Vector3.new(0.1, 0.1, 0.1)) -- White color and slightly larger
+
+    -- Create a BillboardGui for the text
+    local billboardGui = Instance.new("BillboardGui")
+    billboardGui.Adornee = character.PrimaryPart
+    billboardGui.Size = UDim2.new(4, 0, 1, 0)
+    billboardGui.StudsOffset = Vector3.new(0, 3, 0)
+    billboardGui.AlwaysOnTop = true
+
+    -- Create a TextLabel for the character information
+    local textLabel = Instance.new("TextLabel")
+    textLabel.Size = UDim2.new(1, 0, 1, 0)
+    textLabel.BackgroundTransparency = 1
+    textLabel.TextColor3 = Color3.new(1, 0, 0) -- Red color for the text
+    textLabel.TextStrokeTransparency = 0 -- Add outline to the text
+    textLabel.Font = Enum.Font.SourceSansBold
+    textLabel.TextScaled = true
+    textLabel.Parent = billboardGui
+
+    -- Calculate distance from player
+    local player = game.Players.LocalPlayer
+    local characterPosition = character.PrimaryPart.Position
+    local playerPosition = player.Character and player.Character.PrimaryPart.Position or Vector3.new(0, 0, 0)
+    local distance = (characterPosition - playerPosition).Magnitude
+
+    -- Set the text
+    textLabel.Text = string.format("NAME: %s | TYPE: ENTITY | DISTANCE: %.0f", character.Name, distance)
+
+    -- Parent the BillboardGui to the character's primary part
+    billboardGui.Parent = character.PrimaryPart
+end
+
+-- Function to apply ESP to all target characters
+local function applyESPToCharacters()
+    local animatronicsFolder = workspace:WaitForChild("WorkspaceUtilities"):WaitForChild("Animatronics")
+    for _, character in pairs(animatronicsFolder:GetChildren()) do
+        if character:IsA("Model") and (character.Name == "Bonnie" or character.Name == "Freddy" or character.Name == "ShadowBonnie") then
+            print("Found character:", character.Name)
+            if character:FindFirstChild("Humanoid") and character:FindFirstChild("HumanoidRootPart") then
+                character.PrimaryPart = character:FindFirstChild("HumanoidRootPart")
+                createESP(character)
+            else
+                print("Required parts not found for character:", character.Name)
+            end
+        end
+    end
+end
+
+local hi = Window:MakeTab({
+    Name = "basemetn",
+    Icon = "rbxassetid://4483345998",
+    PremiumOnly = false
+})
+
+hi:AddButton({
+	Name = "Button!",
+	Callback = function()
+      		print("button pressed")
+  	end    
+})
